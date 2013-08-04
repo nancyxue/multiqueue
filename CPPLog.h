@@ -22,8 +22,8 @@ public:
 	//	函数：CPPLog
 	//	功能：构造函数，将输出打印到文件
 	//	参数：	logName - 文件名
-	//			autoClear-是否文件超过一定长度自动清空
-	//			maxSize - 日志文件最大尺寸
+	//	autoClear-是否文件超过一定长度自动清空
+	//	maxSize - 日志文件最大尺寸
 	///////////////////////////////////////////////
 	CPPLog( const char* logName, bool autoClear = false, int m_maxLogSize = 0 );
 	
@@ -38,11 +38,11 @@ public:
 	CPPLog& operator << (const char*);
 	CPPLog& operator << (string& );
 
-//	template<typename T>
-//	CPPLog& operator << (const T&);
-//
-//	template<typename T>
-//	CPPLog& operator << (const T*);
+        //	template<typename T>
+        //	CPPLog& operator << (const T&);
+        //
+        //	template<typename T>
+        //	CPPLog& operator << (const T*);
 
 
 	///////////////////////////////////////////////
@@ -55,13 +55,13 @@ public:
 	//	函数：print
 	//	说明：打印格式化内容到设备
 	///////////////////////////////////////////////
-	bool print(const char *fmt, ...);
+	bool print(const char* fmt, ...);
 
 	///////////////////////////////////////////////
 	//	函数：print_nts 
 	//	说明：不抢锁的打印格式化内容到设备，不线程安全
 	///////////////////////////////////////////////
-	bool print_nts(const char *fmt, ...);
+	bool print_nts(const char* fmt, ...);
 
 	///////////////////////////////////////////////
 	//	函数：lock/unlock 
