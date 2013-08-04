@@ -36,13 +36,13 @@ CPPLog::~CPPLog()
 	{
 		m_logStream.close();
 	}
-	pthread_mutex_destroy( &m_fileLock );
+	pthread_mutex_destroy(&m_fileLock);
 }
 
 
 CPPLog& CPPLog::operator << (int obj)
 {
-	CMutexLock lock( m_fileLock );
+	CMutexLock lock(m_fileLock);
 	
 	if (m_logToFile)
 	{
@@ -57,7 +57,7 @@ CPPLog& CPPLog::operator << (int obj)
 
 CPPLog& CPPLog::operator << (unsigned long obj)
 {
-	CMutexLock lock( m_fileLock );
+	CMutexLock lock(m_fileLock);
 	
 	if (m_logToFile)
 	{
@@ -72,7 +72,7 @@ CPPLog& CPPLog::operator << (unsigned long obj)
 
 CPPLog& CPPLog::operator << (const char* obj)
 {
-	CMutexLock lock( m_fileLock );
+	CMutexLock lock(m_fileLock);
 	
 	if (m_logToFile)
 	{
@@ -143,7 +143,7 @@ CPPLog& CPPLog::operator << ( CPPLog& (*op)(CPPLog&) )
 
 CPPLog& CPPLog::flush()
 {
-	CMutexLock lock( m_fileLock );
+	CMutexLock lock(m_fileLock);
 
 	if (m_logToFile)
 	{
@@ -158,7 +158,7 @@ CPPLog& CPPLog::flush()
 }
 
 
-bool CPPLog::print(const char *fmt, ...)
+bool CPPLog::print(const char* fmt, ...)
 {
 	// get the input string
 	char buf[1024];
@@ -168,7 +168,7 @@ bool CPPLog::print(const char *fmt, ...)
 	va_end(ap);
 
 	// print the input to dev
-	CMutexLock lock( m_fileLock );
+	CMutexLock lock(m_fileLock);
 	if (m_logToFile)
 	{
 		//TODO: 如果自动清理，则判断文件大小，超过尺寸就清理
@@ -185,7 +185,7 @@ bool CPPLog::print(const char *fmt, ...)
 }
 
 
-bool CPPLog::print_nts(const char *fmt, ...)
+bool CPPLog::print_nts(const char* fmt, ...)
 {
 	// get the input string
 	char buf[1024];
