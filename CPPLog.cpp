@@ -87,7 +87,7 @@ CPPLog& CPPLog::operator << (const char* obj)
 
 CPPLog& CPPLog::operator << (string& obj)
 {
-	CMutexLock lock( m_fileLock );
+	CMutexLock lock(m_fileLock);
 	
 	if (m_logToFile)
 	{
@@ -104,7 +104,7 @@ CPPLog& CPPLog::operator << (string& obj)
 //template<typename T>
 //CPPLog& CPPLog::operator << (const T& obj)
 //{
-//	CMutexLock lock( m_fileLock );
+//	CMutexLock lock(m_fileLock);
 //	
 //	if (m_logToFile)
 //	{
@@ -121,7 +121,7 @@ CPPLog& CPPLog::operator << (string& obj)
 //template<typename T>
 //CPPLog& CPPLog::operator << (const T* obj)
 //{
-//	CMutexLock lock( m_fileLock );
+//	CMutexLock lock(m_fileLock);
 //	
 //	if (m_logToFile)
 //	{
@@ -135,7 +135,7 @@ CPPLog& CPPLog::operator << (string& obj)
 //}
 //
 
-CPPLog& CPPLog::operator << ( CPPLog& (*op)(CPPLog&) )
+CPPLog& CPPLog::operator << (CPPLog& (*op)(CPPLog&))
 {
 	return (*op)(*this);
 }
