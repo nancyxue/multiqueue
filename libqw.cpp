@@ -10,7 +10,7 @@
 
 using namespace std;
 
-int AddToLocalQueue(const char *queuefile, strmap &data, int cmd)
+int AddToLocalQueue(const char* queuefile, strmap& data, int cmd)
 {
         SerializeResult Result;
 	int datalen=serialize(data, Result);
@@ -21,15 +21,15 @@ int AddToLocalQueue(const char *queuefile, strmap &data, int cmd)
 	{
 		if ( (-1 != flock(fd, LOCK_EX)) && (-1 != lseek(fd, 0, SEEK_END)) )
 		{
-			int bufflen = 4+16+datalen+4;    //[LEN4][HEADER16[ver4][cmd4][resv4][datalen4]][DATA][QEND]
-			char *buff = (char *)malloc(bufflen);
+			int bufflen = 4+16 + datalen+4;    //[LEN4][HEADER16[ver4][cmd4][resv4][datalen4]][DATA][QEND]
+			char* buff = (char* )malloc(bufflen);
 			*(int *)buff = datalen+16;
 			*(int *)(buff+4) = 0x00000001;
 			*(int *)(buff+8) = cmd;
 			*(int *)(buff+12) = 0;
 			*(int *)(buff+16) = datalen;
 			
-			memcpy(buff+20, (const char *)Result, datalen);
+			memcpy(buff+20, (const char*)Result, datalen);
 			memcpy(buff+20+datalen, "QEND", 4);
 			bSu = bufflen == write(fd, buff, bufflen);
 			free(buff);
