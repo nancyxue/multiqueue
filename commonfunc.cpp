@@ -8,7 +8,7 @@
 //return:
 //	0 -- 不是目录
 //	1 -- 是目录
-int CCommonFunc::isDir(const char * dir)
+int CCommonFunc::isDir(const char* dir)
 {
 	struct stat st;
 	if (0 == stat(dir, &st))
@@ -23,7 +23,7 @@ int CCommonFunc::isDir(const char * dir)
 //return:
 //	0 -- 不是普通文件
 //	1 -- 是普通文件
-int CCommonFunc::isReg(const char * file)
+int CCommonFunc::isReg(const char* file)
 {
 	struct stat st;
 	if (0 == stat(file, &st))
@@ -38,7 +38,7 @@ int CCommonFunc::isReg(const char * file)
 //return:
 //	0 -- 不是符号链接
 //	1 -- 是符号链接
-int CCommonFunc::isLnk(const char * link)
+int CCommonFunc::isLnk(const char* link)
 {
 	struct stat st;
 	if (0 == stat(link, &st))
@@ -48,11 +48,11 @@ int CCommonFunc::isLnk(const char * link)
 	return 0;
 }
 
-void CCommonFunc::splitString(const char * src, char c, std::vector<std::string> & slist, int limit)
+void CCommonFunc::splitString(const char* src, char c, std::vector<std::string>& slist, int limit)
 {
 	int count = 1;
 	std::string str;
-	for (int i=0; src[i]; ++i)
+	for (int i = 0; src[i]; ++i)
 	{
 		if (src[i] == c && (limit == 0 || count < limit))
 		{
@@ -68,7 +68,7 @@ void CCommonFunc::splitString(const char * src, char c, std::vector<std::string>
 	slist.push_back(str);
 }
 
-void CCommonFunc::str2map(const char * strRecord, std::map<std::string, std::string> & mapRecord)
+void CCommonFunc::str2map(const char* strRecord, std::map<std::string, std::string>& mapRecord)
 {
 	mapRecord.clear();
 	
@@ -86,21 +86,21 @@ void CCommonFunc::str2map(const char * strRecord, std::map<std::string, std::str
 	}
 }
 
-std::string CCommonFunc::map2str(const std::map<std::string, std::string> & mapRecord)
+std::string CCommonFunc::map2str(const std::map<std::string, std::string>& mapRecord)
 {
 	std::string strRecord;
 	std::map<std::string, std::string>::const_iterator i;
-	for (i=mapRecord.begin(); i!=mapRecord.end(); ++i)
+	for (i = mapRecord.begin(); i != mapRecord.end(); ++i)
 	{
 		strRecord += i->first + ":" + CCommonFunc::encode(i->second.c_str()) + "\n";
 	}
 	return strRecord;
 }
 
-std::string CCommonFunc::encode(const char * src)
+std::string CCommonFunc::encode(const char* src)
 {
 	std::string des;
-	for (int i=0; src[i]; ++i)
+	for (int i = 0; src[i]; ++i)
 	{
 		if (src[i] == '\\')
 		{
@@ -122,10 +122,10 @@ std::string CCommonFunc::encode(const char * src)
 	return des;
 }
 
-std::string CCommonFunc::decode(const char * src)
+std::string CCommonFunc::decode(const char* src)
 {
 	std::string des;
-	for (int i=0; src[i]; ++i)
+	for (int i = 0; src[i]; ++i)
 	{
 		if (src[i] == '\\')
 		{
@@ -157,16 +157,16 @@ std::string CCommonFunc::decode(const char * src)
 	return des;
 }
 
-void CCommonFunc::mapdecode(std::map<std::string, std::string> & mapRecord)
+void CCommonFunc::mapdecode(std::map<std::string, std::string>& mapRecord)
 {
 	std::map<std::string, std::string>::iterator i;
-	for (i=mapRecord.begin(); i!=mapRecord.end(); ++i)
+	for (i = mapRecord.begin(); i != mapRecord.end(); ++i)
 	{
 		i->second = CCommonFunc::decode(i->second.c_str());
 	}
 }
 
-std::string CCommonFunc::trim(const char * src)
+std::string CCommonFunc::trim(const char* src)
 {
 	std::string des;
 	int start = 0;
@@ -185,7 +185,7 @@ std::string CCommonFunc::trim(const char * src)
 			break;
 		}
 	}
-	for (int i=start; i<end; ++i)
+	for (int i = start; i < end; ++i)
 	{
 		des += src[i];
 	}
