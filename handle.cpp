@@ -28,7 +28,7 @@ PIPE::~PIPE()
 	clearfd(m_fd2[1]);
 }
 
-void PIPE::load(const char * path)
+void PIPE::load(const char* path)
 {	
 	if (m_pid)
 	{
@@ -76,7 +76,7 @@ void PIPE::load(const char * path)
 	}
 }
 
-int PIPE::exec(const char * data, unsigned int len)
+int PIPE::exec(const char* data, unsigned int len)
 {
 	if (m_pid == 0)
 	{
@@ -152,7 +152,7 @@ int PIPE::read_exec()
 }
 */
 
-int PIPE::execBatch(const char * data, unsigned int len, unsigned int cmd)
+int PIPE::execBatch(const char* data, unsigned int len, unsigned int cmd)
 {
 	if (m_pid == 0)
 	{
@@ -201,7 +201,7 @@ LIBRARY::~LIBRARY()
 	}
 }
 
-void LIBRARY::load(const char * module, const char * func)
+void LIBRARY::load(const char* module, const char* func)
 {
 	if (!m_handle)
 	{
@@ -226,7 +226,7 @@ void LIBRARY::load(const char * module, const char * func)
 	}
 }
 
-int LIBRARY::exec(const char * func, const char * data, unsigned int len)
+int LIBRARY::exec(const char* func, const char* data, unsigned int len)
 {
 	_COMMANDS::iterator it = m_funcs.find(func);
 	if (it != m_funcs.end() && it->second)
@@ -236,7 +236,7 @@ int LIBRARY::exec(const char * func, const char * data, unsigned int len)
 	return -1;
 }
 
-void LIBRARY::loadBatch(const char * module, const char * func)
+void LIBRARY::loadBatch(const char* module, const char* func)
 {
 	if (!m_handle)
 	{
@@ -261,7 +261,7 @@ void LIBRARY::loadBatch(const char * module, const char * func)
 	}
 }
 
-int LIBRARY::execBatch(const char * func, const char * data, unsigned int len, unsigned int cmd)
+int LIBRARY::execBatch(const char* func, const char* data, unsigned int len, unsigned int cmd)
 {
 	_BATCHCMDS::iterator it = m_batchs.find(func);
 	if (it != m_batchs.end() && it->second)
@@ -271,7 +271,7 @@ int LIBRARY::execBatch(const char * func, const char * data, unsigned int len, u
 	return -1;
 }
 
-void LIBRARY::loadSerial(const char * module, const char * func)
+void LIBRARY::loadSerial(const char* module, const char* func)
 {
 	if (!m_handle)
 	{
@@ -296,7 +296,7 @@ void LIBRARY::loadSerial(const char * module, const char * func)
 	}
 }
 
-int LIBRARY::execSerial(const char * func, const char * data, unsigned int len, std::map<std::string, std::string> & mapItem)
+int LIBRARY::execSerial(const char* func, const char* data, unsigned int len, std::map<std::string, std::string>& mapItem)
 {
 	_SERIALCMDS::iterator it = m_serials.find(func);
 	if (it != m_serials.end() && it->second)
@@ -313,7 +313,7 @@ _LIBRARYS COMMANDS::m_librarys;
 _PIPE COMMANDS::m_pipes;
 COMMANDS commands;                                                        
 
-int outputX(const char * data, unsigned int len)
+int outputX(const char* data, unsigned int len)
 {
 	std::cout << "------------------- outputX -------------------" << std::endl;
 	for (unsigned int i=0; i<len; ++i)
@@ -331,7 +331,7 @@ int outputX(const char * data, unsigned int len)
 	return 0;
 }
 
-int outputS(const char * data, unsigned int len)
+int outputS(const char* data, unsigned int len)
 {
 	std::cout << "------------------- outputS -------------------" << std::endl;
 	for (unsigned int i=16; i<len; ++i)
