@@ -4,41 +4,41 @@
 #include "arg.h"
 #include "uri.h"
 
-int CArg::PostArg(const char * host, int port, const char * query, const char * data, int len, int timeout)
+int CArg::PostArg(const char* host, int port, const char* query, const char* data, int len, int timeout)
 {
         struct sockaddr_in sin;
-	struct hostent *he=gethostbyname(host);
+	struct hostent*he = gethostbyname(host);
 	if(!he)
 	{
 		//std::cout << "Err: gethostbyname("<< host << ")" << std::endl;
 		return -1;
 	}
-	sin.sin_family=he->h_addrtype;
+	sin.sin_family = he->h_addrtype;
 	sin.sin_port = htons(port);
-	sin.sin_addr.s_addr=((unsigned long*)(he->h_addr_list[0]))[0];
+	sin.sin_addr.s_addr =((unsigned long*)(he->h_addr_list[0]))[0];
 
 	int sock;
-	if((sock=socket(AF_INET,SOCK_STREAM,0))<0)
+	if((sock = socket(AF_INET,SOCK_STREAM,0)) < 0)
 	{
 		//std::cout << "Err: socket init failed." << std::endl;
 		return -1;
 	}
 
-	if(connect(sock,(struct sockaddr*)&sin,sizeof(sin))<0)
+	if(connect(sock,(struct sockaddr*)&sin,sizeof(sin)) < 0)
 	{
 		close(sock);
 		//std::cout << "Err: socket connect failed." << std::endl;
 		return -1;
 	}
 	
-	char * szData = new char[len*3+1];
+	char* szData = new char[len*3+1];
 	int nDataLen = URLEncode(data, len, szData);
-	char * szBuf = new char[1024 + 3 * len];
+	char* szBuf = new char[1024 + 3 * len];
 	sprintf(szBuf, "POST %s HTTP/1.0\r\nHost:%s\r\nContent-Length: %d\r\n\r\ndata=%s", query, host, nDataLen+5, szData);
 	int ret = write(sock,szBuf,strlen(szBuf));
 	delete[] szBuf;
 	delete[] szData;
-	if(ret<0)
+	if(ret < 0)
 	{
 		close(sock);
 		//std::cout << "Err: socket write failed." << std::endl;
@@ -51,17 +51,17 @@ int CArg::PostArg(const char * host, int port, const char * query, const char * 
 	FD_ZERO(&rfds);
 	FD_SET(sock,&rfds);
 
-	tv.tv_sec=timeout;
-	tv.tv_usec=0;
+	tv.tv_sec = timeout;
+	tv.tv_usec = 0;
 	
-	if(!select(sock+1,&rfds,NULL,NULL,&tv))
+	if(!select(sock + 1, &rfds, NULL, NULL, &tv))
 	{
 		close(sock);
 		//std::cout << "Err: socket select failed." << std::endl;
 		return -1;
 	}
 
-	if(!FD_ISSET(sock,&rfds))
+	if(!FD_ISSET(sock, &rfds))
 	{
 		close(sock);
 		//std::cout << "Err: socket FD_ISSET failed." << std::endl;
@@ -70,12 +70,12 @@ int CArg::PostArg(const char * host, int port, const char * query, const char * 
 
 	int rv=0;
 	szBuf = new char[1000+1];
-	char * szTmp = szBuf;
+	char* szTmp = szBuf;
 	
 	int iTmp = atoi(szTmp);                                                        
 	int iBuf = atoi(szBuf);                                                
 	
-	while((rv=read(sock,szTmp,1000 - iTmp + iBuf)))                
+	while((rv = read(sock, szTmp, 1000 - iTmp + iBuf)))                
 	{
 		if (rv < 0)
 		{
@@ -106,41 +106,41 @@ int CArg::PostArg(const char * host, int port, const char * query, const char * 
 }
 
 
-bool CArg::Post(const char * host, int port, const char * query, const char * data, int len, int timeout, string& response)   
+bool CArg::Post(const char* host, int port, const char* query, const char* data, int len, int timeout, string& response)   
 {
 	struct sockaddr_in sin;
-	struct hostent *he=gethostbyname(host);
+	struct hostent* he = gethostbyname(host);
 	if(!he)
 	{
 		std::cout << "Err: gethostbyname("<< host << ")" << std::endl;
 		return false;
 	}
-	sin.sin_family=he->h_addrtype;
+	sin.sin_family = he->h_addrtype;
 	sin.sin_port = htons(port);
-	sin.sin_addr.s_addr=((unsigned long*)(he->h_addr_list[0]))[0];
+	sin.sin_addr.s_addr = ((unsigned long*)(he->h_addr_list[0]))[0];
 
 	int sock;
-	if((sock=socket(AF_INET,SOCK_STREAM,0))<0)
+	if((sock = socket(AF_INET,SOCK_STREAM,0)) < 0)
 	{
 		std::cout << "Err: socket init failed." << std::endl;
 		return false;
 	}
 
-	if(connect(sock,(struct sockaddr*)&sin,sizeof(sin))<0)
+	if(connect(sock, (struct sockaddr*)&sin, sizeof(sin)) < 0)
 	{
 		close(sock);
 		std::cout << "Err: socket connect failed." << std::endl;
 		return false;
 	}
 	
-	char * szBuf = new char[1024 + 3 * len];
+	char* szBuf = new char[1024 + 3 * len];
 	sprintf(szBuf, "POST %s HTTP/1.0\r\nContent-type: application/x-www-form-urlencoded\r\nHost:%s\r\nContent-Length: %d\r\n\r\n%s", query, host, len, data);
 	
 	std::cout << "Trace: " << szBuf << std::endl;
 	
 	int ret = write(sock,szBuf,strlen(szBuf));
 	delete[] szBuf;
-	if(ret<0)
+	if(ret < 0)
 	{
 		close(sock);
 		std::cout << "Err: socket write failed." << std::endl;
@@ -153,31 +153,31 @@ bool CArg::Post(const char * host, int port, const char * query, const char * da
 	FD_ZERO(&rfds);
 	FD_SET(sock,&rfds);
 
-	tv.tv_sec=timeout;
-	tv.tv_usec=0;
+	tv.tv_sec = timeout;
+	tv.tv_usec = 0;
 	
-	if(!select(sock+1,&rfds,NULL,NULL,&tv))
+	if(!select(sock + 1, &rfds, NULL, NULL, &tv))
 	{
 		close(sock);
 		std::cout << "Err: socket select failed." << std::endl;
 		return false;
 	}
 
-	if(!FD_ISSET(sock,&rfds))
+	if(!FD_ISSET(sock, &rfds))
 	{
 		close(sock);
 		std::cout << "Err: socket FD_ISSET failed." << std::endl;
 		return false;
 	}
 
-	int rv=0;
+	int rv = 0;
 	szBuf = new char[1000+1];
-	char * szTmp = szBuf;
+	char* szTmp = szBuf;
 	
 	int iTmp = atoi(szTmp);                                                     
 	int iBuf = atoi(szBuf);                                                
 	
-	while((rv=read(sock,szTmp,1000 - iTmp + iBuf)))                        
+	while((rv=read(sock, szTmp, 1000 - iTmp + iBuf)))                        
 	{
 		if (rv < 0)
 		{
@@ -203,7 +203,7 @@ bool CArg::Post(const char * host, int port, const char * query, const char * da
 	}
 	else
 	{
-		char * p = strstr(szBuf,"\r\n\r\n");
+		char* p = strstr(szBuf,"\r\n\r\n");
 		if (!p) p = strstr(szBuf,"\n\n");
 		
 		if (p)
@@ -224,7 +224,7 @@ bool CArg::getUrlencodedStr(map<string,string>& data, string & result)
 	for (iter = data.begin(); iter != data.end(); iter++)
 	{
 		int len = iter->second.length();
-		char * sData = new char[3*len+1];
+		char* sData = new char[3*len+1];
 		
 		URLEncode(iter->second.c_str(), len, sData);
 		
@@ -237,7 +237,7 @@ bool CArg::getUrlencodedStr(map<string,string>& data, string & result)
 	return true;
 }
 
-bool CArg::Post(const char * host, int port, const char * query, map<string,string>& data, int timeout, string& response)
+bool CArg::Post(const char* host, int port, const char* query, map<string,string>& data, int timeout, string& response)
 {
 	string request;
 	
